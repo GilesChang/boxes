@@ -1,3 +1,4 @@
+<!doctype html>
 <html>
 <head>
 <style>
@@ -7,39 +8,48 @@
 	width:50px;
 	height:50px;
 }
+.counter{
+	position:fixed;
+	margin: 0 0 0 0;
+	right: 5px;
+	top: 5px;
+	z-index: 1;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
 </style>
 <script>
-var box_num=0;
+var countbox = 0;
+
 window.onload = function(){
-	create_box(100, 100);
+	create_box("100px", "100px", 0);
 }
 
-function create_box(top,left){
-	var num = box_num;
-	var background = "#"+(Math.floor(Math.random()*16)).toString(16)+(Math.floor(Math.random()*16)).toString(16)+(Math.floor(Math.random()*16)).toString(16)+(Math.floor(Math.random()*16)).toString(16)+(Math.floor(Math.random()*16)).toString(16)+(Math.floor(Math.random()*16)).toString(16);
-	box_num++;
+function create_box(top,left,ang){
+	countbox++;
+	document.querySelectorAll(".counter")[0].innerHTML = "Boxes: "+countbox;
 	
+	var background = "rgb(" + Math.floor(Math.random()*255) + ", "+Math.floor(Math.random()*255) + ", " + Math.floor(Math.random()*255) + ")";
 	var box = document.createElement("div");
-	var box_id = "box_"+num;
+	var element = document.body.appendChild(box);
 	
-	document.body.appendChild(box);
-	document.getElementsByTagName("div")[num].setAttribute("id",box_id);
-	var element = document.getElementById(box_id);
 	element.setAttribute("class","box");
+	element.style["moveangle"]=ang;
 	element.style.top=top;
 	element.style.left=left;
 	element.style.backgroundColor=background;
 	element.addEventListener("click", duplicate, false);
-	randmove(box_id, top, left);
+	randmove(element.style);
 }
 
-function randmove(id, t, l){
-	var move_x = Math.floor(Math.random()*11-5);
-	var n=1;
-	if(Math.random()<0.5){
-		n=-1;
-	}
-	var move_y = n * (5 - Math.abs(move_x));
+function randmove(elem_s){
+	var angle = Math.random()*359+1+elem_s.moveangle;
+	var move_x = 5*Math.sin(angle);
+	var move_y = 5*Math.cos(angle);
+	var t = parseFloat(elem_s.top);
+	var l = parseFloat(elem_s.left);
+
 	setInterval(function(){
 		if((t+move_x<0&&move_x<0)||(t+move_x+50>window.innerHeight&&move_x>0)){
 			move_x*=-1;
@@ -47,19 +57,20 @@ function randmove(id, t, l){
 		if((l+move_y<0&&move_y<0)||(l+move_y+50>window.innerWidth&&move_y>0)){
 			move_y*=-1;
 		}
-		t=t+move_x;
-		l=l+move_y;
-		document.getElementById(id).style.top=t; 
-		document.getElementById(id).style.left=l;
+		t += move_x;
+		l += move_y;
+		elem_s.top = t;
+		elem_s.left = l;
 	},30);
 }
 
 function duplicate(e){
-	create_box(parseInt(e.target.style.top),parseInt(e.target.style.left));
+	create_box(e.target.style.top, e.target.style.left, e.target.style.moveangle);
 }
 
 </script>
 </head>
 <body>
+<p class="counter"></p>
 </body>
 </html>
