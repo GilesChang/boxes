@@ -1,0 +1,65 @@
+<html>
+<head>
+<style>
+.box{
+	position:absolute;
+	margin: 0 0 0 0;
+	width:50px;
+	height:50px;
+}
+</style>
+<script>
+var box_num=0;
+window.onload = function(){
+	create_box(100, 100);
+}
+
+function create_box(top,left){
+	var num = box_num;
+	var background = "#"+(Math.floor(Math.random()*16)).toString(16)+(Math.floor(Math.random()*16)).toString(16)+(Math.floor(Math.random()*16)).toString(16)+(Math.floor(Math.random()*16)).toString(16)+(Math.floor(Math.random()*16)).toString(16)+(Math.floor(Math.random()*16)).toString(16);
+	box_num++;
+	
+	var box = document.createElement("div");
+	var box_id = "box_"+num;
+	
+	document.body.appendChild(box);
+	document.getElementsByTagName("div")[num].setAttribute("id",box_id);
+	var element = document.getElementById(box_id);
+	element.setAttribute("class","box");
+	element.style.top=top;
+	element.style.left=left;
+	element.style.backgroundColor=background;
+	element.addEventListener("click", duplicate, false);
+	randmove(box_id, top, left);
+}
+
+function randmove(id, t, l){
+	var move_x = Math.floor(Math.random()*11-5);
+	var n=1;
+	if(Math.random()<0.5){
+		n=-1;
+	}
+	var move_y = n * (5 - Math.abs(move_x));
+	setInterval(function(){
+		if((t+move_x<0&&move_x<0)||(t+move_x+50>window.innerHeight&&move_x>0)){
+			move_x*=-1;
+		}
+		if((l+move_y<0&&move_y<0)||(l+move_y+50>window.innerWidth&&move_y>0)){
+			move_y*=-1;
+		}
+		t=t+move_x;
+		l=l+move_y;
+		document.getElementById(id).style.top=t; 
+		document.getElementById(id).style.left=l;
+	},30);
+}
+
+function duplicate(e){
+	create_box(parseInt(e.target.style.top),parseInt(e.target.style.left));
+}
+
+</script>
+</head>
+<body>
+</body>
+</html>
