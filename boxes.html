@@ -1,7 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-<style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style type="text/css">
 .box{
 	position:absolute;
 	margin: 0 0 0 0;
@@ -19,7 +20,7 @@
 	-ms-user-select: none;
 }
 </style>
-<script>
+<script type="text/javascript">
 var countbox = 0;
 
 window.onload = function(){
@@ -59,8 +60,8 @@ function randmove(elem_s){
 		}
 		t += move_x;
 		l += move_y;
-		elem_s.top = t;
-		elem_s.left = l;
+		elem_s.top = t + "px";
+		elem_s.left = l + "px";
 	},30);
 }
 
@@ -69,6 +70,7 @@ function duplicate(e){
 }
 
 </script>
+<title>Moving Boxes</title>
 </head>
 <body>
 <p class="counter"></p>
